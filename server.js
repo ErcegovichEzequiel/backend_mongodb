@@ -18,7 +18,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
+app.get("/", (req, res) => {
+    res.send("Hola mundo");
+})
 
 app.use('/api/auth', authRouter); // localhost:4000/api/auth (Es la ruta que va a contener los usuarios)
 
@@ -38,4 +40,4 @@ app.use('/api/carts', cartsRouter); // localhost:4000/api/carts (Es la ruta que 
 
 
 
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+// app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

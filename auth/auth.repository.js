@@ -35,7 +35,6 @@ const insertarUsuario = async (usuario) => { // funcion para insertar un usuario
         return true // retorna true, significa que se inserto el usuario
     }
     catch (error) {
-        console.log("Error pichon", error)
         throw { status: 500, message: "Error papu" } // retorna el error interno en la base de datos
     }
 }
