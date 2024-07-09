@@ -18,8 +18,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/test", (req, res) => {
-    res.send("Hola mundo");
+app.get('/test', (req, res) => {
+    res.json({status: 200, message: "Hello World"});
 })
 
 app.use('/api/auth', authRouter); // localhost:4000/api/auth (Es la ruta que va a contener los usuarios)
