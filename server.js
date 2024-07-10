@@ -16,8 +16,7 @@ app.use(cors({
     origin: 'http://localhost:5173',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
-    // optionsSuccessStatus: 200,  // some legacy browsers (IE11, various SmartTVs) choke on 204
-    // allowedHeaders: ['Content-Type', 'Authorization']  // Add headers allowed in the requests
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
