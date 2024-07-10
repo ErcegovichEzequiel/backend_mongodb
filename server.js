@@ -28,16 +28,4 @@ app.use('/api/products', productRouter); // localhost:4000/api/products (Es la r
 
 app.use('/api/carts', cartsRouter); // localhost:4000/api/carts (Es la ruta que va a contener los carritos)
 
-
-
-
-
-
-
-
-
-
-
-
-
  app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
