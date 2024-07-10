@@ -5,17 +5,20 @@ dotenv.config();
 
 const { conectionMongoose } = require('./config/conection.mongodb')
 
-// const { database } = require('./config/connectio.sql.js');
 const { authRouter } = require("./auth/auth.route");
 const { productRouter } = require("./products/products.router");
 const { cartsRouter } = require("./carts/carts.router");
 
-
-
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-app.use(cors());
+app.use(cors(
+    {
+        origin: 'http://localhost:5173',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        credentials: true
+    }
+));
 app.use(express.json());
 
 app.get('/test', (req, res) => {
