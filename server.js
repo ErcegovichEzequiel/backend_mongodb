@@ -12,13 +12,14 @@ const { cartsRouter } = require("./carts/carts.router");
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-app.use(cors(
-    {
-        origin: 'http://localhost:5173',
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-        credentials: true
-    }
-));
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 200,  // some legacy browsers (IE11, various SmartTVs) choke on 204
+    allowedHeaders: ['Content-Type', 'Authorization']  // Add headers allowed in the requests
+}));
+
 app.use(express.json());
 
 app.get('/test', (req, res) => {

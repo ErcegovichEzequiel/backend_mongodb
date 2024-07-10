@@ -78,18 +78,16 @@ const obtenerCarritoDetallado = async (cart_id) => {
 
 const eliminarProductoDelCarrito = async (cart_id, product_id) => {
     try {
-        const carrito = await Cart.findById(cart_id)
+        const carrito = await Cart.findById(cart_id);
         if (!carrito) {
-            throw { status: 404, message: 'CARRITO NO ENCONTRADO' }
+            throw { status: 404, message: 'CARRITO NO ENCONTRADO' };
         }
-        carrito.items = carrito.items.filter((item) => {
-            !item.product_id.equals(product_id)
-        })
-        await carrito.save()
+        carrito.items = carrito.items.filter((item) => !item.product_id.equals(product_id));
+        await carrito.save();
+    } catch (error) {
+        throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' };
     }
-    catch (error) {
-        throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }
-    }
-}
+};
+
 
 module.exports = { obtenerOCrearCarrito, agregarAlCarrito, obtenerCarritoDetallado, eliminarProductoDelCarrito }
