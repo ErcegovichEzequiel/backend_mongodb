@@ -48,11 +48,7 @@ const { registerService, loginService } = require("./auth.service");
 const jwt = require('jsonwebtoken');
 
 const loginController = async (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    
+
     const { email, password } = req.body;
     try {
         const token = await loginService({ email, password });
