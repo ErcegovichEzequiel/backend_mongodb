@@ -27,11 +27,14 @@ const { validacionExistencia } = require("../helpers/validation.helper");
 const jwt = require('jsonwebtoken');
 
 const verifyTokenMiddlewar = (req, res, next) => {
-    const token = req.headers['Authorization'];
+    const token = req.headers['authorization'];
 
-    if (!validacionExistencia(token) || !isNaN(token) || token === undefined || token === null) {
+    if (!token){
         return res.status(400).json({ status: 400, ok: false, message: "No autorizado, debe proporcionar un token valido" });
     }
+    // if (!validacionExistencia(token) || !isNaN(token) || token === undefined || token === null) {
+    //     return res.status(400).json({ status: 400, ok: false, message: "No autorizado, debe proporcionar un token valido" });
+    // }
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (error, datos) => {
         if (error) {
