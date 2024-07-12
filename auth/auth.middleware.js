@@ -27,7 +27,7 @@ const { validacionExistencia } = require("../helpers/validation.helper");
 const jwt = require('jsonwebtoken');
 
 const verifyTokenMiddlewar = (req, res, next) => {
-    const token = req.headers['authorization'];
+    const token = req.headers['Authorization'];
 
     if (!validacionExistencia(token) || !isNaN(token) || token === undefined || token === null) {
         return res.status(400).json({ status: 400, ok: false, message: "No autorizado, debe proporcionar un token valido" });

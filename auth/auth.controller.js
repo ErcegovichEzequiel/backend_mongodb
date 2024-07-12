@@ -27,17 +27,37 @@ const registerController = async (req, res) => { // Controlador de registro de u
 
 const verifyTokenController = (req, res) => {
     const token = req.headers['authorization']
-    if (!validacionExistencia(token) || !isNaN(token) || token === undefined || token === null) {
-        res.status(400).json({ status: 400, ok: false, message: "No autorizado, debe proporcionar un token valido" })
+
+    if (!token) {
+        return res.status(400).json({ status: 400, ok: false, message: "No autorizado, debe proporcionar un token válido" })
     }
-    const esValido = jwt.verify(token, process.env.JWT_SECRET_KEY)
-    if (!esValido) {
-        res.status(401).json({ status: 401, ok: false, message: "No autorizado, token invalido" })
-    }
-    else {
-        res.status(200).json({ status: 200, ok: true, message: "Token valido, usuario logueado" })
+
+    try {
+        const esValido = jwt.verify(token, process.env.JWT_SECRET_KEY)
+        if (!esValido) {
+            return res.status(401).json({ status: 401, ok: false, message: "No autorizado, token inválido" })
+        }
+
+        return res.status(200).json({ status: 200, ok: true, message: "Token válido, usuario logueado" })
+    } catch (error) {
+        return res.status(401).json({ status: 401, ok: false, message: "No autorizado, token inválido" })
     }
 }
+
+
+// const verifyTokenController = (req, res) => {
+//     const token = req.headers['Authorization']
+//     if (!validacionExistencia(token) || !isNaN(token) || token === undefined || token === null) {
+//         res.status(400).json({ status: 400, ok: false, message: "No autorizado, debe proporcionar un token valido" })
+//     }
+//     const esValido = jwt.verify(token, process.env.JWT_SECRET_KEY)
+//     if (!esValido) {
+//         res.status(401).json({ status: 401, ok: false, message: "No autorizado, token invalido" })
+//     }
+//     else {
+//         res.status(200).json({ status: 200, ok: true, message: "Token valido, usuario logueado" })
+//     }
+// }
 
 
 module.exports = { loginController, registerController, verifyTokenController }
