@@ -24,14 +24,14 @@ const productSchema = new mongoose.Schema({
 })
 
 const Product = conectionMongoose.model('products', productSchema)
-const seleccionarProductoPorId = async (pid) => { //funcion para buscar un producto por id
+const seleccionarProductoPorId = async (pid) => { 
     try {
-        const producto = await Product.findById(pid) // busca el proyecto en la base de datos
-        if (!producto) {// valida si hay resultados 
-            throw { status: 404, message: 'PRODUCTO CON ID: ' + pid + ' NO ENCONTRADO' } // retorna el error de proyecto no encontrado en la base de datos
+        const producto = await Product.findById(pid) 
+        if (!producto) {
+            throw { status: 404, message: 'PRODUCTO CON ID: ' + pid + ' NO ENCONTRADO' } 
         }
         else {
-            return producto // retorna el producto encontrado
+            return producto 
         }
     }
     catch (error) {
@@ -40,18 +40,18 @@ const seleccionarProductoPorId = async (pid) => { //funcion para buscar un produ
         }
         else {
             throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }
-        }// retorna el error interno en la base de datos
+        }
     }
 }
 
-const insertarProducto = async ({ titulo, precio, descripcion, stock, codigo }) => { //funcion para insertar un producto
+const insertarProducto = async ({ titulo, precio, descripcion, stock, codigo }) => { 
     try {
-        const nuevoProducto = new Product({ titulo, precio, descripcion, stock, codigo }) // crea un nuevo producto
-        await nuevoProducto.save() // ejecuta la consulta en la base de datos, retorna el id del producto insertado en la base de datos y el status de la insercion.
-        return nuevoProducto._id // retorna el id del proyecto insertado
+        const nuevoProducto = new Product({ titulo, precio, descripcion, stock, codigo }) 
+        await nuevoProducto.save() 
+        return nuevoProducto._id 
     }
     catch (error) {
-        throw { status: 500, message: 'ERROR INTERNO EN EL SERVIDORrrrrr' } // retorna el error interno en la base de datos
+        throw { status: 500, message: 'ERROR INTERNO EN EL SERVIDORrrrrr' } 
     }
 }
 
@@ -59,7 +59,7 @@ const eliminarProducto = async (pid) => {
     try {
         const resultado = await Product.findByIdAndDelete(pid)
         if (!resultado) {
-            throw { status: 404, message: 'PRODUCTO CON ID: ' + pid + ' NO ENCONTRADO' } // retorna el error de proyecto no encontrado en la base de datos
+            throw { status: 404, message: 'PRODUCTO CON ID: ' + pid + ' NO ENCONTRADO' } 
         }
         else {
             return { ok: true, status: 200, message: 'PRODUCTO CON ID: ' + pid + ' ELIMINADO CORRECTAMENTE' }
@@ -69,7 +69,7 @@ const eliminarProducto = async (pid) => {
         if (error.status === 404) {
             throw error
         } else {
-            throw { status: 500, message: 'ERROR INTERNO EN EL SERVIDOR' } // retorna el error interno en la base de datos
+            throw { status: 500, message: 'ERROR INTERNO EN EL SERVIDOR' } 
         }
     }
 }
@@ -104,7 +104,5 @@ const modificarProductoPorId = async (pid, nuevosDatos) => {
         }
     }
 }
-
-
 
 module.exports = { seleccionarProductoPorId, modificarProductoPorId, insertarProducto, eliminarProducto, seleccionarTodosLosProductos }

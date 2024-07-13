@@ -37,13 +37,10 @@ const validacionCargaProducto = (product) => {
             { func: valor => tipoDeDato(valor, 'string'), message: 'El codigo solo acepta letras' }
         ]
     }
-
-    for (const key of allowedProperties) { // Itera sobre las propiedades permitidas
-        // Si la propiedad está definida en el producto, realiza las validaciones
+    for (const key of allowedProperties) { 
         if (product[key] !== undefined) {
-            // Itera sobre las validaciones definidas para la propiedad
             for (const validation of validations[key]) {
-                // Si alguna validación falla, lanza un error con el mensaje correspondiente
+                
                 if (!validation.func(product[key])) {
                     throw { status: 400, message: validation.message }
                 }
@@ -53,7 +50,3 @@ const validacionCargaProducto = (product) => {
 }
 
 module.exports = { validacionCargaProducto }
-
-
-// ANOTACIONES: El "func" es simplemente una propiedad de un objeto. Puede tener cualquier nombre, pero en este caso se eligió func porque se refiere a una función de validación.
-// El uso de "val =>" es una forma abreviada de definir una función anónima.

@@ -3,8 +3,8 @@ const { validacionCargaProducto } = require("./utils/validationProducts.utils")
 
 const createProduct = async (product) => {
     try {
-        validacionCargaProducto(product) // valida que los datos sean correctos, se pasa el objeto sin desestructurar para que pueda informar si cargo mas propiedades de las que se piden. Si le paso solo la desestructuracion, no tengo como informar si hay mas propiedades de las solicitadas.
-        const resultado = await insertarProducto(product) // inserta el producto en la base de datos
+        validacionCargaProducto(product) 
+        const resultado = await insertarProducto(product) 
         if (resultado) {
             return { ok: true, message: 'Se inserto nuevo producto', id: resultado._id , producto: product }          
         }
@@ -20,7 +20,7 @@ const createProduct = async (product) => {
 
 const obtenerProductoPorId = async (pid) => {
     try {
-        const producto = await seleccionarProductoPorId(pid) // busca el producto en la base de datos
+        const producto = await seleccionarProductoPorId(pid) 
         return { ok: true, status: 200, producto }
     }
     catch (error) {
@@ -31,12 +31,11 @@ const obtenerProductoPorId = async (pid) => {
         }
     }
 }
-
 const eliminarProductoPorId = async (pid) => {
     try {
-        const producto = await seleccionarProductoPorId(pid) // busca el producto en la base de datos
-        if (producto) { // valida si el producto existe
-            await eliminarProducto(pid) // espera el resultado de eliminarProducto
+        const producto = await seleccionarProductoPorId(pid) 
+        if (producto) { 
+            await eliminarProducto(pid) 
             return { ok: true, status: 200, message: 'PRODUCTO CON ID: ' + pid + ' ELIMINADO CORRECTAMENTE' }
         } else {
             throw { status: 404, message: 'Producto no encontrado' }
@@ -49,7 +48,6 @@ const eliminarProductoPorId = async (pid) => {
         }
     }
 }
-
 const modificarProducto = async (pid, nuevosDatos) => {
     try {
         const producto = await seleccionarProductoPorId(pid);
@@ -67,7 +65,6 @@ const modificarProducto = async (pid, nuevosDatos) => {
         }   
     }
 }
-
 const buscarProducto = async () => {
     try {
         const productos = await seleccionarTodosLosProductos()
