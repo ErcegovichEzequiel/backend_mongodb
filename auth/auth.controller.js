@@ -23,7 +23,6 @@ const registerController = async (req, res) => {
     }
 }
 
-// controlador para buscar todos los usuarios
 const buscarTodosLosUsuariosController = async (req, res) => {
     try {
         const result = await buscarTodosLosUsuariosService()

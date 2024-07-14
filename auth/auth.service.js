@@ -1,7 +1,7 @@
 const { buscarUsuarioPorEmail, insertarUsuario, buscarTodosLosUsuarios, eliminarUsuario, actualizarUsuarioPorId, buscarUsuarioPorId } = require("./auth.repository")
 const { validacionUsuaruioRegistro, validacionUsuaruioLogin } = require("./utils/validationUser.util")
-const bcrypt = require('bcrypt') // libreria para encriptar el password
-const jwt = require('jsonwebtoken') // libreria para generar el token
+const bcrypt = require('bcrypt') 
+const jwt = require('jsonwebtoken') 
 
 const registerService = async (usuario) => {
     try {
@@ -58,7 +58,7 @@ const loginService = async (usuario) => {
     }
 }
 
-// servicio que busque todos los usuarios
+
 const buscarTodosLosUsuariosService = async () => {
     try {
         const usuarios = await buscarTodosLosUsuarios()
@@ -109,7 +109,6 @@ const modificarUsuarioPorId = async (_id, nuevosDatos) => {
             throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }
         }    }
 }
-
 
 
 module.exports = { registerService, loginService, buscarTodosLosUsuariosService, eliminarUsuarioPorId, modificarUsuarioPorId }

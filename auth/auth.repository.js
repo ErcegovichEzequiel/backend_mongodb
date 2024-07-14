@@ -52,7 +52,6 @@ const insertarUsuario = async (usuario) => {
     }
 }
 
-// funcion que busque todos los usuarios
 const buscarTodosLosUsuarios = async () => {
     try {
         const usuarios = await User.find({})
@@ -68,7 +67,6 @@ const buscarTodosLosUsuarios = async () => {
     }
 }
 
-// funcion que elimine usuario por id
 const eliminarUsuario = async (_id) => {
     try {
         const usuario = await User.findByIdAndDelete(_id)
@@ -83,7 +81,6 @@ const eliminarUsuario = async (_id) => {
         }
     }
 
-// funcion que actualice usuario por id
 const actualizarUsuarioPorId = async (_id, usuario) => {
         try {
             const usuarioActualizado = await User.findByIdAndUpdate(_id, usuario, { new: true })
