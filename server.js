@@ -12,11 +12,19 @@ const { cartsRouter } = require("./carts/carts.router");
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-app.use(cors());
+
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    optionsSuccessStatus: 200,
+    credentials: true
+}
+app.use(cors(corsOptions));
+
+// app.use(cors());
 
 app.use(express.json());
 
-app.use('/api/auth', authRouter); 
+app.use('/api/auth', authRouter);
 
 app.use('/api/products', productRouter);
 
