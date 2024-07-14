@@ -12,12 +12,7 @@ const { cartsRouter } = require("./carts/carts.router");
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-app.use(cors(
-    {
-        origin: "http://localhost:5173",
-        credentials: true
-    }
-));
+app.use(cors());
 
 app.use(express.json());
 
