@@ -16,22 +16,13 @@ app.use(cors(
     {
         origin: "http://localhost:5173",
         credentials: true
-
     }
 ));
 
-
-
 app.use(express.json());
-
-app.get('/test', (req, res) => {
-    res.json({status: 200, message: "Hello World"});
-})
 
 app.use('/api/auth', authRouter); 
 
 app.use('/api/products', productRouter);
 
-app.use('/api/carts', cartsRouter); 
-
- app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+app.use('/api/carts', cartsRouter);  
