@@ -1,6 +1,6 @@
 const { validacionExistencia } = require("../helpers/validation.helper")
-const { registerService, loginService } = require("./auth.service")
-const jwt = require('jsonwebtoken') 
+const { registerService, loginService, buscarTodosLosUsuariosService } = require("./auth.service")
+const jwt = require('jsonwebtoken')
 
 const loginController = async (req, res) => {
     const { email, password } = req.body
@@ -12,16 +12,32 @@ const loginController = async (req, res) => {
         res.status(error.status).json(error)
     }
 }
-const registerController = async (req, res) => { 
+const registerController = async (req, res) => {
     const { email, password } = req.body
     try {
         const result = await registerService({ email, password })
-        res.status(200).json(result) 
+        res.status(200).json(result)
     }
     catch (error) {
         res.status(error.status).json(error)
     }
 }
+
+// controlador para buscar todos los usuarios
+const buscarTodosLosUsuariosController = async (req, res) => {
+    try {
+        const result = await buscarTodosLosUsuariosService()
+        res.status(200).json({result})
+    }
+    catch (error) {
+        res.status(error.status).json(error)
+    }
+}
+
+
+
+
+
 const verifyTokenController = (req, res) => {
     const token = req.headers['authorization']
     if (!token) {
@@ -38,4 +54,4 @@ const verifyTokenController = (req, res) => {
     }
 }
 
-module.exports = { loginController, registerController, verifyTokenController }
+module.exports = { loginController, registerController, verifyTokenController, buscarTodosLosUsuariosController }

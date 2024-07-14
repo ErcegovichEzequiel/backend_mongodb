@@ -1,24 +1,24 @@
-const { buscarUsuarioPorEmail, insertarUsuario } = require("./auth.repository")
+const { buscarUsuarioPorEmail, insertarUsuario, buscarTodosLosUsuarios, eliminarUsuarioPorId, actualizarUsuarioPorId } = require("./auth.repository")
 const { validacionUsuaruioRegistro, validacionUsuaruioLogin } = require("./utils/validationUser.util")
 const bcrypt = require('bcrypt') // libreria para encriptar el password
 const jwt = require('jsonwebtoken') // libreria para generar el token
 
 const registerService = async (usuario) => {
     try {
-        const { email, password } = usuario //desestructuracion de usuario
-        // validacionUsuaruioRegistro({ email, password, passwordConfirm, edad, nombre, apellido }) //validacion del usuario, la validacion se hace en el helper de la carpeta utils y lo que hace es retornar un error si el usuario no cumple con las validaciones
+        const { email, password } = usuario 
+         validacionUsuaruioRegistro({ email, password, passwordConfirm, edad, nombre, apellido }) 
 
-        const usuarioExistente = await buscarUsuarioPorEmail(usuario.email) // Buscar usuario por email en la base de datos, arroja null o el usuario, si es null no existe el usuario
+        const usuarioExistente = await buscarUsuarioPorEmail(usuario.email) 
 
         if (usuarioExistente) {
             throw { status: 400, message: 'ERROR: Email ya registrado' }
         }
 
-         const passwordHash = await bcrypt.hash(usuario.password, 10) // encriptar el password
+         const passwordHash = await bcrypt.hash(usuario.password, 10) 
 
-        const result = await insertarUsuario({ email: usuario.email, password: passwordHash }) // insertar el usuario en la base de datos
+        const result = await insertarUsuario({ email: usuario.email, password: passwordHash }) 
 
-        if (result) { // valida si se inserto el usuario
+        if (result) { 
             return { ok: true, message: 'Se inserto nuevo usuario' }
         }
     }
@@ -35,7 +35,7 @@ const loginService = async (usuario) => {
     try {
         const { email, password } = usuario
         validacionUsuaruioLogin(email, password)
-        const usuarioExistente = await buscarUsuarioPorEmail(usuario.email) //arroja null o el usuario
+        const usuarioExistente = await buscarUsuarioPorEmail(usuario.email) 
         if (!usuarioExistente) {
             throw { status: 400, message: 'ERROR: No existe el usuario con ese email' }
         }
@@ -44,7 +44,7 @@ const loginService = async (usuario) => {
         if (!esCorrecta) {
             throw { status: 400, message: 'ERROR: Contraseña incorrecta' }
         } 
-            const token = jwt.sign({ email, user_id: usuarioExistente.id }, process.env.JWT_SECRET_KEY, { expiresIn: '48h' }) //genera el token para el usuario logueado
+            const token = jwt.sign({ email, user_id: usuarioExistente.id }, process.env.JWT_SECRET_KEY, { expiresIn: '48h' }) 
             return token
         
     }
@@ -58,4 +58,20 @@ const loginService = async (usuario) => {
     }
 }
 
-module.exports = { registerService, loginService }
+// servicio que busque todos los usuarios
+const buscarTodosLosUsuariosService = async () => {
+    try {
+        const usuarios = await buscarTodosLosUsuarios()
+        if (usuarios.length === 0) {
+            throw { status: 404, message: 'No hay usuarios registrados' }
+        }
+        return { ok: true, status: 200, message: 'Se encontraron: ' + usuarios.length + ' usuarios', usuarios: usuarios }
+    }
+    catch (error) {
+        throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }     
+    }
+}   
+
+
+
+module.exports = { registerService, loginService, buscarTodosLosUsuariosService}
