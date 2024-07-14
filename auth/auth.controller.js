@@ -1,5 +1,5 @@
 const { validacionExistencia } = require("../helpers/validation.helper")
-const { registerService, loginService, buscarTodosLosUsuariosService } = require("./auth.service")
+const { registerService, loginService, buscarTodosLosUsuariosService, eliminarUsuarioPorId, modificarUsuarioPorId } = require("./auth.service")
 const jwt = require('jsonwebtoken')
 
 const loginController = async (req, res) => {
@@ -27,16 +27,35 @@ const registerController = async (req, res) => {
 const buscarTodosLosUsuariosController = async (req, res) => {
     try {
         const result = await buscarTodosLosUsuariosService()
-        res.status(200).json({result})
+        res.status(200).json({ result })
     }
     catch (error) {
         res.status(error.status).json(error)
     }
 }
 
+const eliminarUsuaruioPorIdController = async (req, res) => {
+    try {
+        const {_id}= req.params
+        const result = await eliminarUsuarioPorId(_id)
+        res.status(200).json({ result })
+    }
+    catch (error) {
+        res.status(error.status).json({error})
+    }
+}
 
-
-
+const modificarUsuarioPorIdController = async (req, res) => {
+    try {
+        const {_id}= req.params
+        const usuario = req.body
+        const result = await modificarUsuarioPorId(_id, usuario)
+        res.status(200).json({ result })
+    }
+    catch (error) {
+        res.status(error.status).json({error})
+    }
+}
 
 const verifyTokenController = (req, res) => {
     const token = req.headers['authorization']
@@ -54,4 +73,4 @@ const verifyTokenController = (req, res) => {
     }
 }
 
-module.exports = { loginController, registerController, verifyTokenController, buscarTodosLosUsuariosController }
+module.exports = { loginController, registerController, verifyTokenController, buscarTodosLosUsuariosController, eliminarUsuaruioPorIdController, modificarUsuarioPorIdController }

@@ -1,4 +1,4 @@
-const { buscarUsuarioPorEmail, insertarUsuario, buscarTodosLosUsuarios, eliminarUsuarioPorId, actualizarUsuarioPorId } = require("./auth.repository")
+const { buscarUsuarioPorEmail, insertarUsuario, buscarTodosLosUsuarios, eliminarUsuario, actualizarUsuarioPorId, buscarUsuarioPorId } = require("./auth.repository")
 const { validacionUsuaruioRegistro, validacionUsuaruioLogin } = require("./utils/validationUser.util")
 const bcrypt = require('bcrypt') // libreria para encriptar el password
 const jwt = require('jsonwebtoken') // libreria para generar el token
@@ -72,6 +72,44 @@ const buscarTodosLosUsuariosService = async () => {
     }
 }   
 
+const eliminarUsuarioPorId = async (_id) => {
+    try {
+        const usuario = await buscarUsuarioPorId(_id)
+        if (usuario){
+            await eliminarUsuario(_id)
+            return { ok: true, status: 200 , message: 'Usuario con ID: ' + _id + ' eliminado correctamente' }
+        }
+        else{
+            throw { status: 400, message: 'ERROR: No existe el usuario con ese ID' }
+        }
+    }
+    catch (error) {
+        if (error.status) {
+            throw error
+        } else {
+            throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }
+        }    }
+}
+
+const modificarUsuarioPorId = async (_id, nuevosDatos) => {
+    try {
+        const usuario = await buscarUsuarioPorId(_id)
+        if (usuario){
+            const result = await actualizarUsuarioPorId(_id, nuevosDatos)
+            return { ok: true, status: 200 , message: 'Usuario con ID: ' + _id + ' modificado correctamente' }
+        }
+        else{
+            throw { status: 400, message: 'ERROR: No existe el usuario con ID: ' + _id }
+        }
+    }
+    catch (error) {
+        if (error.status) {
+            throw error
+        } else {
+            throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }
+        }    }
+}
 
 
-module.exports = { registerService, loginService, buscarTodosLosUsuariosService}
+
+module.exports = { registerService, loginService, buscarTodosLosUsuariosService, eliminarUsuarioPorId, modificarUsuarioPorId }

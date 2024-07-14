@@ -11,13 +11,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-  
+
 })
 const User = conectionMongoose.model('Users', userSchema)
 
-const buscarUsuarioPorEmail = async (email) => { 
+const buscarUsuarioPorEmail = async (email) => {
     try {
-        const usuario = await User.findOne({ email: email }) 
+        const usuario = await User.findOne({ email: email })
         if (!usuario) {
             return null
         }
@@ -28,14 +28,27 @@ const buscarUsuarioPorEmail = async (email) => {
     }
 }
 
-const insertarUsuario = async (usuario) => { 
+const buscarUsuarioPorId = async (_id) => {
     try {
-        const nuevoUsuario = new User(usuario)   
-        await nuevoUsuario.save() 
-        return true 
+        const usuario = await User.findById(_id)
+        if (!usuario) {
+            throw { status: 404, message: 'USUARIO CON ID: ' + _id + ' NO ENCONTRADO' }
+        }
+        return usuario
     }
     catch (error) {
-        throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' } 
+        throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }
+    }
+}
+
+const insertarUsuario = async (usuario) => {
+    try {
+        const nuevoUsuario = new User(usuario)
+        await nuevoUsuario.save()
+        return true
+    }
+    catch (error) {
+        throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }
     }
 }
 
@@ -51,29 +64,37 @@ const buscarTodosLosUsuarios = async () => {
         }
         else {
             throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }
-        }    }
+        }
+    }
 }
 
 // funcion que elimine usuario por id
-const eliminarUsuarioPorId = async (id) => {
+const eliminarUsuario = async (_id) => {
     try {
-        const usuario = await User.findByIdAndDelete(id)
-        return usuario
+        const usuario = await User.findByIdAndDelete(_id)
+        if (!usuario) {
+            throw { status: 404, message: 'USUARIO CON ID: ' + _id + ' NO ENCONTRADO' }
+        } else{
+            return { ok: true, status: 200, message: 'Se elimino el usuario con ID: ' + _id }
+        }
     }
     catch (error) {
-        throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }
+            throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }
+        }
     }
-}
 
 // funcion que actualice usuario por id
-const actualizarUsuarioPorId = async (id, usuario) => {
-    try {
-        const usuarioActualizado = await User.findByIdAndUpdate(id, usuario)
-        return usuarioActualizado
+const actualizarUsuarioPorId = async (_id, usuario) => {
+        try {
+            const usuarioActualizado = await User.findByIdAndUpdate(_id, usuario, { new: true })
+            if (!usuarioActualizado) {
+                throw { status: 404, message: 'USUARIO CON ID: ' + _id + ' NO ENCONTRADO' }
+            } 
+                return { ok: true, status: 200, message: 'Se actualizo el usuario con ID: ' + _id }            
+        }
+        catch (error) {
+            throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }
+        }
     }
-    catch (error) {
-        throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }
-    }
-}
 
-module.exports = { buscarUsuarioPorEmail, insertarUsuario, buscarTodosLosUsuarios, eliminarUsuarioPorId, actualizarUsuarioPorId } 
+    module.exports = { buscarUsuarioPorEmail, insertarUsuario, buscarTodosLosUsuarios, eliminarUsuario, actualizarUsuarioPorId, buscarUsuarioPorId } 
