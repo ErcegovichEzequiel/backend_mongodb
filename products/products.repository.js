@@ -16,10 +16,6 @@ const productSchema = new mongoose.Schema({
     stock: {
         type: Number,
         required: true
-    },
-    codigo: {
-        type: String,
-        required: true
     }
 })
 
@@ -44,9 +40,9 @@ const seleccionarProductoPorId = async (pid) => {
     }
 }
 
-const insertarProducto = async ({ titulo, precio, descripcion, stock, codigo }) => { 
+const insertarProducto = async ({ titulo, precio, descripcion, stock }) => { 
     try {
-        const nuevoProducto = new Product({ titulo, precio, descripcion, stock, codigo }) 
+        const nuevoProducto = new Product({ titulo, precio, descripcion, stock }) 
         await nuevoProducto.save() 
         return nuevoProducto._id 
     }

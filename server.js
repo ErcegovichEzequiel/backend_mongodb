@@ -29,3 +29,8 @@ app.use('/api/auth', authRouter);
 app.use('/api/products', productRouter);
 
 app.use('/api/carts', cartsRouter);  
+
+
+app.listen(PORT, () => {
+   console.log(`Server running on port ${PORT}`);
+})

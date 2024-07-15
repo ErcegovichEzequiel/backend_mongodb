@@ -57,19 +57,27 @@ const modificarUsuarioPorIdController = async (req, res) => {
 }
 
 const verifyTokenController = (req, res) => {
-    const token = req.headers['authorization']
-    if (!token) {
-        return res.status(400).json({ status: 400, ok: false, message: "No autorizado, debe proporcionar un token válido" })
-    }
     try {
-        const esValido = jwt.verify(token, process.env.JWT_SECRET_KEY)
-        if (!esValido) {
-            return res.status(401).json({ status: 401, ok: false, message: "No autorizado, token inválido" })
+        const authHeader = req.headers['authorization'];
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(400).json({ status: 400, ok: false, message: "No autorizado, debe proporcionar un token válido" });
         }
-        return res.status(200).json({ status: 200, ok: true, message: "Token válido, usuario logueado" })
+        const token = authHeader.split(' ')[1];
+        if (!token) {
+            return res.status(400).json({ status: 400, ok: false, message: "No autorizado, debe proporcionar un token válido" });
+        }
+        const esValido = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        if (!esValido) {
+            return res.status(401).json({ status: 401, ok: false, message: "No autorizado, token inválido" });
+        }
+        return res.status(200).json({ status: 200, ok: true, message: "Token válido, usuario logueado" });
     } catch (error) {
-        return res.status(401).json({ status: 401, ok: false, message: "No autorizado, token inválido" })
+        if (error instanceof jwt.JsonWebTokenError) {
+            return res.status(401).json({ status: 401, ok: false, message: "Token expirado o inválido" });
+        }
+        return res.status(401).json({ status: 401, ok: false, message: "No autorizado, token inválido" });
     }
-}
+};
+
 
 module.exports = { loginController, registerController, verifyTokenController, buscarTodosLosUsuariosController, eliminarUsuaruioPorIdController, modificarUsuarioPorIdController }

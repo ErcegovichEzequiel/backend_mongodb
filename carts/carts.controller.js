@@ -16,8 +16,8 @@ const postCartController = async (req, res) => {
 
 const getCartController = async (req, res) => {
     try {
-        const user = req.user
-        const result = await obtenerCarritoService(user.user_id)
+        const user = req.user // Obtener el usuario de la petición HTTP con el token
+        const result = await obtenerCarritoService(user.user_id) // Obtener el carrito del usuario con el token
         res.status(result.status).json(result)
     }
     catch (error) {

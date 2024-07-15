@@ -1,7 +1,7 @@
 const { validacionExistencia, minYmaxCaracteres, tipoDeDato } = require("../../helpers/validation.helper")
 
 const validacionCargaProducto = (product) => {
-    const allowedProperties = ['titulo', 'precio', 'descripcion', 'stock', 'codigo']
+    const allowedProperties = ['titulo', 'precio', 'descripcion', 'stock']
     for (const key of Object.keys(product)) {
         if (!allowedProperties.includes(key)) {
             throw { status: 400, message: `ERROR: ${key} no es un dato habilitado para crear un producto` }
@@ -31,11 +31,6 @@ const validacionCargaProducto = (product) => {
             { func: valor => valor >= 0, message: 'El stock no puede ser negativo ni cero' },
             { func: valor => tipoDeDato(valor, 'number'), message: 'El stock solo acepta numeros' }
         ],
-        codigo: [
-            { func: validacionExistencia, message: 'Debe colocar un codigo' },
-            { func: valor => minYmaxCaracteres(valor, 1, 100), message: 'El codigo debe tener al menos 1 caracter y un maximo de 100' },
-            { func: valor => tipoDeDato(valor, 'string'), message: 'El codigo solo acepta letras' }
-        ]
     }
     for (const key of allowedProperties) { 
         if (product[key] !== undefined) {

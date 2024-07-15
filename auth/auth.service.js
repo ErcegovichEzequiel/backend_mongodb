@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const registerService = async (usuario) => {
     try {
         const { email, password } = usuario 
-         validacionUsuaruioRegistro({ email, password, passwordConfirm, edad, nombre, apellido }) 
+         validacionUsuaruioRegistro({ email, password }) 
 
         const usuarioExistente = await buscarUsuarioPorEmail(usuario.email) 
 
@@ -57,8 +57,6 @@ const loginService = async (usuario) => {
         }
     }
 }
-
-
 const buscarTodosLosUsuariosService = async () => {
     try {
         const usuarios = await buscarTodosLosUsuarios()
@@ -70,7 +68,7 @@ const buscarTodosLosUsuariosService = async () => {
     catch (error) {
         throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS' }     
     }
-}   
+}  
 
 const eliminarUsuarioPorId = async (_id) => {
     try {

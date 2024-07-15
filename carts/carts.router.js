@@ -5,9 +5,9 @@ const { postCartController, getCartController, deleteProductFromCartController }
 
 const cartsRouter = express.Router()
 
-cartsRouter.get('/', verifyTokenMiddlewar, getCartController)
-cartsRouter.post('/', verifyTokenMiddlewar, postCartController)
-cartsRouter.delete('/:product_id', verifyTokenMiddlewar, deleteProductFromCartController)
+cartsRouter.get('/',verifyTokenMiddlewar, getCartController) // obtener todos los productos del carrito
+cartsRouter.post('/agregarAlCart', verifyTokenMiddlewar, postCartController) // Agregar un producto al carrito 
+cartsRouter.delete('/:product_id', verifyTokenMiddlewar, deleteProductFromCartController) // borrar un producto por su id
 
 
 
